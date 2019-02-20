@@ -101,22 +101,37 @@ var DosimPage = /** @class */ (function () {
     };
     DosimPage.prototype.startselfie = function () {
         this.mode = 2;
-        var options = {
-            x: 0.1 * window.screen.width,
+        var cameraPreviewOpts = {
+            x: Math.round(0.1 * window.screen.width),
             y: 0,
-            width: 0.8 * window.screen.width,
-            height: 0.8 * window.screen.height,
+            width: Math.round(0.8 * window.screen.width),
+            height: Math.round(0.8 * window.screen.height),
             camera: 'front',
-            toBack: false,
             tapPhoto: true,
-            tapFocus: false,
-            previewDrag: false
+            previewDrag: true,
+            toBack: true,
+            alpha: 1
         };
-        this.cameraPreview.startCamera(options);
+        this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
+            console.log('start: ' + JSON.stringify(res));
+        }, function (err) {
+            console.log(JSON.stringify(err));
+        });
+        this.cameraPreview.setOnPictureTakenHandler().subscribe(function (result) {
+            console.log('handler: ' + JSON.stringify(result));
+        });
     };
     DosimPage.prototype.takepicture = function () {
-        this.cameraPreview.takePicture({ width: 500, quality: 85 }, function (base64PictureData) {
-            alert(base64PictureData);
+        var pictureOpts = {
+            width: 500,
+            height: 650,
+            quality: 85
+        };
+        // take a picture
+        this.cameraPreview.takePicture(this.pictureOpts).then(function (imageData) {
+            console.log('data: ' + imageData);
+        }, function (err) {
+            console.log('err: ' + JSON.stringify(err));
         });
     };
     DosimPage = __decorate([
