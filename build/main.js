@@ -134,6 +134,7 @@ var DosimPage = /** @class */ (function () {
         var _this = this;
         this.barcodeScanner.scan().then(function (barcodeData) {
             var t = _this.pdecode(barcodeData.text);
+            alert(t);
             var w = t.split(',');
             while (w.length < 5)
                 w.push('');
