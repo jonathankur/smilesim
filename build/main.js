@@ -1,4 +1,4 @@
-webpackJsonp([1],{
+webpackJsonp([2],{
 
 /***/ 149:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -117,11 +117,32 @@ var DosimPage = /** @class */ (function () {
         this.title = 'SELFIE TIME!';
         this.mode = 1;
     };
+    DosimPage.prototype.pdecode = function (pwd) {
+        var l = parseInt(pwd.substr(0, 3));
+        pwd = pwd.substr(3);
+        var d = pwd.length / 12;
+        var juggleback = [9, 4, 10, 1, 8, 6, 3, 2, 7, 5, 0, 11];
+        var p = '';
+        for (var i = 0; i < d; i++) {
+            var pp = pwd.substr(i * 12, 12);
+            for (var e = 0; e < 12; e++)
+                p = p + pp.substr(juggleback[e], 1);
+        }
+        return p.substr(0, l);
+    };
     DosimPage.prototype.scanqr = function () {
+        var _this = this;
         this.barcodeScanner.scan().then(function (barcodeData) {
-            alert(barcodeData.text);
+            var t = _this.pdecode(barcodeData.text);
+            var w = t.split(',');
+            while (w.length < 5)
+                w.push('');
+            _this.pl.name = w[0];
+            _this.pl.email = w[1];
+            _this.pl.phone = w[2];
+            _this.pl.dcode = w[3];
         }, function (err) {
-            alert('err: ' + JSON.stringify(err));
+            //      alert('err: '+JSON.stringify(err));
         });
     };
     DosimPage.prototype.takepicture = function () {
@@ -194,9 +215,10 @@ var DosimPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-dosim',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/dosim/dosim.html"*/'<ion-header no-border no-shadow  style="background-color:white">\n	<ion-navbar align-title="center"  style="background-color:white">\n		<ion-title style="background-color:white"><img src="./assets/img/mainbanner.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content no-padding text-center>\n<div style="width:100%; background-color:#22B14C; text-align:center !important; color:white; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important">{{ title }}</div>\n\n<div *ngIf="mode==0" >\n<ion-list no-lines>\n<ion-item>\n<ion-row>\n<ion-col col-2></ion-col>\n<ion-col col-8 style="color:black; background-color:gainsboro; font-size:1.3em">\n<img [src]="src" style="width:100%; margin-bottom:0px !important">\n<div style="width:100%; margin-top:0px !important; text-align:center">{{ baf }}</div>\n</ion-col>\n<ion-col col-2></ion-col>\n</ion-row>\n</ion-item>\n\n<ion-item text-center text-wrap>\n<p>{{ blurb }}</p>\n</ion-item>\n\n<ion-item>\n<ion-row text-center>\n<ion-col col-4 (click)="gonxt(2);">\n<img src="./assets/img/sad.png" style="width:66%">\n</ion-col>\n<ion-col col-4 (click)="gonxt(1);">\n<img src="./assets/img/mid.png" style="width:66%">\n</ion-col>\n<ion-col col-4 (click)="gonxt(0);">\n<img src="./assets/img/happy.png" style="width:66%">\n</ion-col>\n</ion-row>\n<ion-row text-center>\n<ion-col col-4 (click)="gonxt(2);">\n<p>YES</p>\n</ion-col>\n<ion-col col-4 (click)="gonxt(1);">\n<p>MAYBE</p>\n</ion-col>\n<ion-col col-4 (click)="gonxt(0);">\n<p>NO</p>\n</ion-col>\n</ion-row>\n</ion-item>\n<ion-item text-center text-wrap *ngIf="current>0">\n<p (click)="goback()"><u>Back to Previous Question</u></p>\n</ion-item>\n\n</ion-list>\n</div>\n\n<div *ngIf="mode==1">\n<ion-list>\n<ion-item>\n<ion-label stacked>Any other comments?</ion-label>\n<ion-textarea [(ngModel)]="pl.comments"  style="color:dodgerblue" rows="3"> </ion-textarea>\n</ion-item>\n<ion-item no-lines text-center>\n<button ion-button large (click)="takepicture()" color="secondary">\n<ion-icon name="camera"></ion-icon> Take Selfie\n</button>\n</ion-item>\n\n<ion-item no-lines text-center>\n<button ion-button large (click)="cheat()" color="secondary">\n<ion-icon name="camera"></ion-icon> Cheat\n</button>\n</ion-item>\n\n<ion-item no-lines>\n<div [innerHTML]="instructions">\n</div>\n</ion-item>\n</ion-list>\n</div>\n\n<div *ngIf="mode==2">\n<p>Rather than enter all of your details, if you have a personalized letter from your dentist, </p>\n<button ion-button full color="secondary" (click)="scanqr()">\nClick Here to Scan Your QR Code </button>\n<p> </p>\n<p>-- or --</p>\n<p> </p>\n<ion-list no-padding>\n<ion-item>\n<ion-label stacked>Your Name</ion-label>\n<ion-input [(ngModel)]="pl.name"  style="color:dodgerblue" required></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Email Address</ion-label>\n<ion-input [(ngModel)]="pl.email" type="email" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Phone Number</ion-label>\n<ion-input [(ngModel)]="pl.phone" type="number" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Dentist Code</ion-label>\n<ion-input [(ngModel)]="pl.dcode" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item *ngIf="pl.dcodestat==0" (click)="nocode()">\n<p>Don\'t have a Dentist Code?</p>\n</ion-item> \n<ion-item *ngIf="pl.dcodestat==1" (click)="yescode()" text-wrap>\n<p>Please ask your dentist for their <b>MySmilesim</b> code.<br>If they have not yet joined our system, please enter your location and we will locate a suitable dentist for your needs</p>\n<br>\n<p><u>I found my Dentist Code</u></p>\n</ion-item>\n<ion-item *ngIf="pl.dcodestat==1">\n <ion-label stacked>Your Suburb</ion-label>\n <ion-input [(ngModel)]="pl.suburb" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item *ngIf="pl.dcodestat==1">\n <ion-label stacked>Your State</ion-label>\n <ion-input [(ngModel)]="pl.state" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item *ngIf="pl.dcodestat==1">\n <ion-label stacked>Your Country</ion-label>\n <ion-input [(ngModel)]="pl.country" required style="color:dodgerblue"></ion-input>\n</ion-item>\n</ion-list>\n<button ion-button full color="secondary" (click)="saveme()">\n<ion-icon name="paper-plane"></ion-icon>\nSEND TO {{ pl.dcodestat ? \'MYSMILESIM\' : \'DENTIST\' }}\n</button>\n</div>\n</ion-content>'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/dosim/dosim.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */], __WEBPACK_IMPORTED_MODULE_5__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__providers_connect__["a" /* Connect */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_connect__["a" /* Connect */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _h || Object])
     ], DosimPage);
     return DosimPage;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=dosim.js.map
@@ -226,6 +248,10 @@ webpackEmptyAsyncContext.id = 182;
 var map = {
 	"../pages/dosim/dosim.module": [
 		449,
+		1
+	],
+	"../pages/mysims/mysims.module": [
+		450,
 		0
 	]
 };
@@ -515,7 +541,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_11__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/dosim/dosim.module#DosimPageModule', name: 'DosimPage', segment: 'dosim', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/dosim/dosim.module#DosimPageModule', name: 'DosimPage', segment: 'dosim', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/mysims/mysims.module#MysimsPageModule', name: 'MysimsPage', segment: 'mysims', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],
