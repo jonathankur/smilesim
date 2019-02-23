@@ -129,7 +129,7 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="8.0.1" />
     <plugin name="onesignal-cordova-plugin" spec="2.4.5" source="npm" />
 <preference name="android-build-tool" value="gradle" />
-<preference name="android-minSdkVersion" value="15" />
+<preference name="android-minSdkVersion" value="16" />
 
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge" overwrite="true">
     <string>Use Camera to Upload Pictures</string>
