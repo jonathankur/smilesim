@@ -156,6 +156,7 @@ var DosimPage = /** @class */ (function () {
             quality: 100,
             targetWidth: 500,
             targetHeight: 650,
+            correctOrientation: true,
             destinationType: this.camera.DestinationType.DATA_URL,
             cameraDirection: this.camera.Direction.FRONT,
             encodingType: this.camera.EncodingType.JPEG,
