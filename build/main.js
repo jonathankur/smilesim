@@ -500,7 +500,7 @@ var DosimPage = /** @class */ (function () {
             loading.dismiss();
             that.doComplete();
         }, function (err) {
-            alert(err);
+            alert(JSON.stringify(err));
             loading.dismiss();
         });
     };
