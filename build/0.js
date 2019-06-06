@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 454:
+/***/ 455:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResultPageModule", function() { return ResultPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NopinPageModule", function() { return NopinPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nopin__ = __webpack_require__(150);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,23 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ResultPageModule = /** @class */ (function () {
-    function ResultPageModule() {
+var NopinPageModule = /** @class */ (function () {
+    function NopinPageModule() {
     }
-    ResultPageModule = __decorate([
+    NopinPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__result__["a" /* ResultPage */],
+                __WEBPACK_IMPORTED_MODULE_2__nopin__["a" /* NopinPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__result__["a" /* ResultPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__nopin__["a" /* NopinPage */]),
             ],
         })
-    ], ResultPageModule);
-    return ResultPageModule;
+    ], NopinPageModule);
+    return NopinPageModule;
 }());
 
-//# sourceMappingURL=result.module.js.map
+//# sourceMappingURL=nopin.module.js.map
 
 /***/ })
 

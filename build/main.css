@@ -25719,6 +25719,11 @@ page-dosim .blkp {
   margin-top: 10px !important;
 }
 
+page-dosim .btt {
+  color: #F8F8F8;
+  background-color: #272522;
+}
+
 page-examples .blk {
   background-color: #272522;
   color: #F8F8F8;
@@ -25746,6 +25751,38 @@ page-mysims .hdr {
 
 page-mysims .bgr {
   font-size: 1.3em !important;
+}
+
+page-nopin .blk {
+  background-color: #272522;
+  color: #F8F8F8;
+}
+
+page-nopin .blkh {
+  color: #FFFF82;
+}
+
+page-nopin .hdr {
+  background-color: silver;
+  color: black;
+}
+
+page-nopin .bgr {
+  font-size: 1.1em;
+  background-color: #272522;
+  color: #F8F8F8;
+}
+
+page-nopin .blkp {
+  font-size: 1.1em;
+  background-color: #272522;
+  color: #F8F8F8;
+  margin-top: 10px !important;
+}
+
+page-nopin .btt {
+  color: #F8F8F8;
+  background-color: #272522;
 }
 
 page-result .blk {
