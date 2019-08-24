@@ -534,7 +534,6 @@ var PreviewPage = /** @class */ (function () {
         this.newprev();
     };
     PreviewPage.prototype.newprev = function () {
-        var _this = this;
         // camera options (Size and location). In the following example, the preview uses the rear camera and display the preview in the back of the webview
         var cameraPreviewOpts = {
             x: Math.round(window.screen.width * 0.1),
@@ -544,8 +543,8 @@ var PreviewPage = /** @class */ (function () {
             camera: 'rear',
             tapPhoto: true,
             previewDrag: true,
-            toBack: true,
-            alpha: 1
+            toBack: false,
+            alpha: 0.5
         };
         // start camera
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
@@ -553,30 +552,35 @@ var PreviewPage = /** @class */ (function () {
         }, function (err) {
             alert(JSON.stringify(err));
         });
-        // picture options
+    };
+    // picture options
+    PreviewPage.prototype.takepic = function () {
+        var _this = this;
         // take a picture
         this.cameraPreview.takePicture(this.pictureOpts).then(function (imageData) {
             _this.picture = 'data:image/jpeg;base64,' + imageData;
         }, function (err) {
-            console.log(err);
+            alert(JSON.stringify(err));
             _this.picture = 'assets/img/test.jpg';
         });
+    };
+    PreviewPage.prototype.takesnap = function () {
+        var _this = this;
         // take a snap shot
         this.cameraPreview.takeSnapshot(this.pictureOpts).then(function (imageData) {
             _this.picture = 'data:image/jpeg;base64,' + imageData;
         }, function (err) {
-            console.log(err);
+            alert(JSON.stringify(err));
             _this.picture = 'assets/img/test.jpg';
         });
     };
     PreviewPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-preview',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/preview/preview.html"*/'<!--\n  Generated template for the PreviewPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>preview</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n<img [src]="picture">\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/preview/preview.html"*/,
+            selector: 'page-preview',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/preview/preview.html"*/'<!--\n  Generated template for the PreviewPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>preview</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding style="backgorund-color:transparent">\n<ion-row>\n<ion-col col-6>\n<button ion-button large block (click)="takepic()" color="light">\nPic\n</button>\n</ion-col>\n<ion-col col-6>\n<button ion-button large block (click)="takesnap()" color="light">\nSnap\n</button>\n</ion-col>\n</ion-row>\n<img [src]="picture">\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/preview/preview.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera_preview_ngx__["a" /* CameraPreview */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera_preview_ngx__["a" /* CameraPreview */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera_preview_ngx__["a" /* CameraPreview */]])
     ], PreviewPage);
     return PreviewPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=preview.js.map
