@@ -505,6 +505,7 @@ var PreviewPage = /** @class */ (function () {
             toBack: false,
             alpha: 0.5
         };
+        alert(JSON.stringify(cameraPreviewOpts));
         // start camera
         this.cameraPreview.startCamera(cameraPreviewOpts).then(function (res) {
             alert('all good');
