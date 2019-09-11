@@ -234,12 +234,15 @@ var HomePage = /** @class */ (function () {
             uniq = String.fromCharCode(n1) + d.getTime().toString() + String.fromCharCode(n2);
             window.localStorage.setItem('uniq', uniq);
         }
+        alert('uniq=' + uniq);
         var region = window.localStorage.getItem('region');
         if (!region)
             window.localStorage.setItem('region', '0');
+        alert('region=' + window.localStorage.getItem('region'));
         this.pushid = window.localStorage.getItem('pushid');
         if (!this.pushid)
             this.pushid = '';
+        alert('pushid=' + this.pushid);
         var that = this;
         var url = 'https://mysmilesim.dental/server/home.php?region=' + window.localStorage.getItem('region') + '&me=' + uniq;
         this.http.get(url).subscribe(function (data) {
@@ -305,9 +308,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/home/home.html"*/'<ion-header no-border no-shadow class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png" style="margin-top:5px"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content padding class="blk">\n<div [innerHTML]="content" style="font-size:1.2em">\n</div>\n<ion-row *ngIf="!num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="startup()" color="light">\nGet Started\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<ion-row *ngIf="num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="previous()" color="light">\nSee My Simulations\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<div [innerHTML]="content2" style="font-size:1.2em">\n</div>\n</ion-content>\n\n<ion-footer class="blk">\n<img [src]="banner" style="width:100%" >\n<ion-grid no-padding>\n<ion-row text-center>\n <ion-col col-4 (click)="startup()">\n <ion-icon name="camera"> </ion-icon>\n </ion-col>\n <ion-col col-4 (click)="previous()">\n <ion-icon name="happy"> </ion-icon>\n <ion-badge color="danger" *ngIf="unseen">{{ unseen }}</ion-badge>\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n <ion-icon name="photos"> </ion-icon>\n </ion-col>\n\n</ion-row>\n<ion-row text-center style="min-height:50px !important">\n\n <ion-col col-4 (click)="startup()">\n New<br>Selfie\n </ion-col>\n\n <ion-col col-4 (click)="previous()">\n See My<br>Simulations\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n Example<br>Gallery\n </ion-col>\n\n</ion-row>\n\n</ion-grid>\n</ion-footer>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */]) === "function" && _d || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=home.js.map
