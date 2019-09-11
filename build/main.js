@@ -7,7 +7,9 @@ webpackJsonp([1],{
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NopinPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(84);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -20,6 +22,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 /**
  * Generated class for the NopinPage page.
  *
@@ -27,13 +31,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var NopinPage = /** @class */ (function () {
-    function NopinPage(navCtrl, navParams, nhttp, loadingCtrl, alertCtrl) {
+    function NopinPage(navCtrl, navParams, nhttp, loadingCtrl, alertCtrl, http, camera) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.nhttp = nhttp;
         this.loadingCtrl = loadingCtrl;
         this.alertCtrl = alertCtrl;
+        this.http = http;
+        this.camera = camera;
+        this.mode = '0';
         this.pl = {
+            id: '0',
             suburb: '',
             state: '',
             country: '',
@@ -49,7 +57,7 @@ var NopinPage = /** @class */ (function () {
         var that = this;
         var alert = this.alertCtrl.create({
             title: 'Thank you - All Done',
-            subTitle: 'We will notify you with a PIN Code from a local dentist',
+            subTitle: 'We will locate a suitable dentist for you',
             buttons: [
                 {
                     text: 'Okay',
@@ -63,13 +71,33 @@ var NopinPage = /** @class */ (function () {
         });
         alert.present();
     };
-    NopinPage.prototype.saveme = function () {
+    NopinPage.prototype.takepicture = function () {
+        var _this = this;
+        var options = {
+            quality: 100,
+            targetWidth: 500,
+            targetHeight: 650,
+            correctOrientation: true,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            cameraDirection: this.camera.Direction.FRONT,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
+        };
+        this.camera.getPicture(options).then(function (imageData) {
+            _this.pl.picdata = imageData;
+            _this.saveme2();
+        }, function (err) {
+            alert(JSON.stringify(err));
+        });
+    };
+    NopinPage.prototype.saveme2 = function () {
+        this.pl.me = window.localStorage.getItem('uniq');
         var that = this;
         var loading = this.loadingCtrl.create({
             content: 'Please wait...'
         });
         loading.present();
-        var url = 'https://mysmilesim.dental/server/nopin.php';
+        var url = 'https://mysmilesim.dental/server/newpat_upload.php';
         this.nhttp.post(url, that.pl, {})
             .then(function (data) {
             loading.dismiss();
@@ -80,11 +108,31 @@ var NopinPage = /** @class */ (function () {
             loading.dismiss();
         });
     };
+    NopinPage.prototype.saveme = function () {
+        var that = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        loading.present();
+        var url = 'https://mysmilesim.dental/server/nopin.php';
+        this.nhttp.post(url, that.pl, {})
+            .then(function (data) {
+            loading.dismiss();
+            var s = JSON.stringify(data);
+            var d = JSON.parse(s);
+            that.pl.id = d.id;
+            that.mode = 1;
+        })
+            .catch(function (error) {
+            alert(JSON.stringify(error));
+            loading.dismiss();
+        });
+    };
     NopinPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-nopin',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/nopin/nopin.html"*/'<ion-header no-border no-shadow  class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content padding class="blk">\n<p class="blk">Please enter your details and we will locate a suitable dentist in your area</p>\n<ion-list no-padding class="blk">\n<ion-item>\n<ion-label stacked>Your Name</ion-label>\n<ion-input [(ngModel)]="pl.name"  style="color:dodgerblue" required></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Email Address</ion-label>\n<ion-input [(ngModel)]="pl.email" type="email" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Phone Number</ion-label>\n<ion-input [(ngModel)]="pl.phone" type="text" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your Suburb</ion-label>\n <ion-input [(ngModel)]="pl.suburb" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your State / Region</ion-label>\n <ion-input [(ngModel)]="pl.state" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your Country</ion-label>\n <ion-input [(ngModel)]="pl.country" required style="color:dodgerblue"></ion-input>\n</ion-item>\n</ion-list>\n<button ion-button full color="light" (click)="saveme()">\n<ion-icon name="paper-plane"></ion-icon>\nSEND\n</button>\n\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/nopin/nopin.html"*/,
+            selector: 'page-nopin',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/nopin/nopin.html"*/'<ion-header no-border no-shadow  class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n<div *ngIf="mode==0" class="blk">\n<ion-content padding class="blk">\n<p class="blk">Please enter your details and we will locate a suitable dentist in your area</p>\n<ion-list no-padding class="blk">\n<ion-item>\n<ion-label stacked>Your Name</ion-label>\n<ion-input [(ngModel)]="pl.name"  style="color:dodgerblue" required></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Email Address</ion-label>\n<ion-input [(ngModel)]="pl.email" type="email" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n<ion-label stacked>Your Phone Number</ion-label>\n<ion-input [(ngModel)]="pl.phone" type="text" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your Suburb</ion-label>\n <ion-input [(ngModel)]="pl.suburb" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your State / Region</ion-label>\n <ion-input [(ngModel)]="pl.state" required style="color:dodgerblue"></ion-input>\n</ion-item>\n<ion-item>\n <ion-label stacked>Your Country</ion-label>\n <ion-input [(ngModel)]="pl.country" required style="color:dodgerblue"></ion-input>\n</ion-item>\n</ion-list>\n<button ion-button full color="light" (click)="saveme()">\n<ion-icon name="paper-plane"></ion-icon>\nSEND\n</button>\n</div>\n<div *ngIf="mode==1" class="blk">\n<ion-list class="blk">\n<ion-item class="blk">\n<ion-label stacked style="font-size:1.2em">Any other comments or concerns?</ion-label>\n<ion-textarea [(ngModel)]="pl.comments"  style="color:#272522; background-color:silver; font-weight:bold" rows="3" placeholder="Write your note here ..."> </ion-textarea>\n</ion-item>\n<ion-item no-lines text-center class="blk">\n<button ion-button large (click)="takepicture()" color="light">\n<ion-icon name="camera"></ion-icon> Take Selfie\n</button>\n</ion-item>\n\n<ion-item no-lines text-wrap class="blk">\n<div [innerHTML]="instructions" style="width:100%">\n</div>\n</ion-item>\n</ion-list>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/nopin/nopin.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */]])
     ], NopinPage);
     return NopinPage;
 }());
@@ -144,7 +192,7 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__examples_examples__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dosim_dosim__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mysims_mysims__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__ = __webpack_require__(282);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -186,11 +234,14 @@ var HomePage = /** @class */ (function () {
             uniq = String.fromCharCode(n1) + d.getTime().toString() + String.fromCharCode(n2);
             window.localStorage.setItem('uniq', uniq);
         }
+        var region = window.localStorage.getItem('region');
+        if (!region)
+            window.localStorage.setItem('region', '0');
         this.pushid = window.localStorage.getItem('pushid');
         if (!this.pushid)
             this.pushid = '';
         var that = this;
-        var url = 'https://mysmilesim.dental/server/home.php?me=' + uniq;
+        var url = 'https://mysmilesim.dental/server/home.php?region=' + window.localStorage.getItem('region') + '&me=' + uniq;
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -217,7 +268,7 @@ var HomePage = /** @class */ (function () {
         i.then(function (data) {
             var that = _this;
             var w = window.localStorage.getItem('uniq');
-            var url = 'https://mysmilesim.dental/server/pushtoken.php?me=' + w + '&pushid=' + data.userId;
+            var url = 'https://mysmilesim.dental/server/pushtoken.php?region=' + window.localStorage.getItem('region') + '&me=' + w + '&pushid=' + data.userId;
             window.localStorage.setItem('pushid', data.userId);
             _this.http.get(url).subscribe(function (data) {
             }, function (err) {
@@ -270,7 +321,7 @@ var HomePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExamplesPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(44);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -304,7 +355,7 @@ var ExamplesPage = /** @class */ (function () {
         this.pics = [];
         this.current = 0;
         var that = this;
-        var url = 'https://mysmilesim.dental/server/examples.php?end=' + Math.random();
+        var url = 'https://mysmilesim.dental/server/examples.php?region=' + window.localStorage.getItem('region') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -354,9 +405,9 @@ var ExamplesPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DosimPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__nopin_nopin__ = __webpack_require__(152);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -411,6 +462,7 @@ var DosimPage = /** @class */ (function () {
             suburb: '',
             state: '',
             country: '',
+            region: '0',
             name: '',
             email: '',
             pushid: '',
@@ -434,9 +486,11 @@ var DosimPage = /** @class */ (function () {
                 that.pl.email = d.email;
                 that.pl.dcode = d.dcode;
                 that.pl.phone = d.phone;
+                window.localStorage.setItem('region', d.region);
             }
             else {
-                that.pin = 'Incorrect';
+                that.pin = '';
+                that.showError();
             }
         }, function (err) {
         });
@@ -453,7 +507,7 @@ var DosimPage = /** @class */ (function () {
             that.baf = (that.odd ? 'BEFORE' : 'AFTER');
         }, 2500);
         this.pl.uniq = window.localStorage.getItem('myac');
-        var url = 'https://mysmilesim.dental/server/instructions.php?end=' + Math.random();
+        var url = 'https://mysmilesim.dental/server/instructions.php?region=' + window.localStorage.getItem('region') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -526,6 +580,23 @@ var DosimPage = /** @class */ (function () {
     DosimPage.prototype.nopin = function () {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__nopin_nopin__["a" /* NopinPage */]);
     };
+    DosimPage.prototype.showError = function () {
+        var that = this;
+        var alert = this.alertCtrl.create({
+            title: 'Incorrect PIN Code',
+            subTitle: 'Please ask your dentist for a code',
+            buttons: [
+                {
+                    text: 'Okay',
+                    cssClass: 'btt',
+                    role: 'cancel',
+                    handler: function () {
+                    }
+                }
+            ]
+        });
+        alert.present();
+    };
     DosimPage.prototype.doComplete = function () {
         var _this = this;
         var that = this;
@@ -552,6 +623,7 @@ var DosimPage = /** @class */ (function () {
         if (!pi)
             pi = '';
         this.pl.pushid = pi;
+        this.pl.region = window.localStorage.getItem('region');
         var that = this;
         var loading = this.loadingCtrl.create({
             content: 'Please wait...'
@@ -588,10 +660,10 @@ var DosimPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MysimsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__result_result__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(84);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -622,6 +694,7 @@ var MysimsPage = /** @class */ (function () {
         this.cards = [];
         this.pl = {
             picdata: '',
+            region: '0',
             id: 0
         };
     }
@@ -630,7 +703,7 @@ var MysimsPage = /** @class */ (function () {
         this.instr = '';
         this.me = window.localStorage.getItem('uniq');
         var that = this;
-        var url = 'https://mysmilesim.dental/server/mysims.php?me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
+        var url = 'https://mysmilesim.dental/server/mysims.php?region=' + window.localStorage.getItem('region') + '&me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -658,6 +731,7 @@ var MysimsPage = /** @class */ (function () {
         };
         this.camera.getPicture(options).then(function (imageData) {
             _this.pl.picdata = imageData;
+            _this.pl.region = window.localStorage.getItem('region');
             _this.saveme();
         }, function (err) {
             alert(JSON.stringify(err));
@@ -719,7 +793,7 @@ var MysimsPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_in_app_browser__ = __webpack_require__(276);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -753,7 +827,7 @@ var ResultPage = /** @class */ (function () {
     }
     ResultPage.prototype.ionViewDidLoad = function () {
         var that = this;
-        var url = 'https://mysmilesim.dental/server/getresult.php?id=' + this.navParams.get('id');
+        var url = 'https://mysmilesim.dental/server/getresult.php?region=' + window.localStorage.getItem('region') + '&id=' + this.navParams.get('id');
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -805,23 +879,23 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_in_app_browser__ = __webpack_require__(276);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(466);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(472);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_dosim_dosim__ = __webpack_require__(279);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_mysims_mysims__ = __webpack_require__(280);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_examples_examples__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(277);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_result_result__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_nopin_nopin__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_common_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_camera__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_common_http__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_camera__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_native_onesignal__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_http__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_http__ = __webpack_require__(84);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -896,7 +970,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 466:
+/***/ 472:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
