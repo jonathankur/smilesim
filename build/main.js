@@ -110,7 +110,7 @@ var NopinPage = /** @class */ (function () {
         });
     };
     NopinPage.prototype.saveme = function () {
-        this.pl.id = '23';
+        this.pl.id = '0';
         var that = this;
         var loading = this.loadingCtrl.create({
             content: 'Please wait...'
@@ -123,14 +123,11 @@ var NopinPage = /** @class */ (function () {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
             var s2 = JSON.stringify(d.data);
-            alert('s2=' + s2);
             var a1 = s2.indexOf(':') + 1;
             var a2 = s2.indexOf('}');
             var d2 = s2.substring(a1, a2);
-            alert('d2=' + d2);
             that.pl.id = d2;
             that.mode = 1;
-            alert(JSON.stringify(that.pl));
         })
             .catch(function (error) {
             alert(JSON.stringify(error));
@@ -489,6 +486,7 @@ var DosimPage = /** @class */ (function () {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
             if (d.success) {
+                alert(JSON.stringify(d));
                 that.mode = 0;
                 that.shownum();
                 that.pl.name = d.name;
@@ -716,6 +714,7 @@ var MysimsPage = /** @class */ (function () {
         this.instr = '';
         this.me = window.localStorage.getItem('uniq');
         var that = this;
+        alert('region=[' + window.localStorage.getItem('region') + ']');
         var url = 'https://mysmilesim.dental/server/mysims.php?region=' + window.localStorage.getItem('region') + '&me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
