@@ -486,7 +486,6 @@ var DosimPage = /** @class */ (function () {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
             if (d.success) {
-                alert(JSON.stringify(d));
                 that.mode = 0;
                 that.shownum();
                 that.pl.name = d.name;
@@ -714,7 +713,6 @@ var MysimsPage = /** @class */ (function () {
         this.instr = '';
         this.me = window.localStorage.getItem('uniq');
         var that = this;
-        alert('region=[' + window.localStorage.getItem('region') + ']');
         var url = 'https://mysmilesim.dental/server/mysims.php?region=' + window.localStorage.getItem('region') + '&me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
