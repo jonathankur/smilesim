@@ -25814,3 +25814,7 @@ page-result .hdr {
 page-result p {
   color: #F8F8F8;
 }
+
+page-result a {
+  color: #FFFF82 !important;
+}
