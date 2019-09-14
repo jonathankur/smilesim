@@ -25697,7 +25697,7 @@ ion-navbar.toolbar {
 }
 
 ion-header ion-icon.back-button-icon.icon {
-  color: #f4f4f4;
+  color: #f8f8f8 !important;
 }
 
 .header .toolbar-title {
