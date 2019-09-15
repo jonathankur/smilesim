@@ -1,0 +1,36 @@
+<ion-header no-border no-shadow  class="blk">
+	<ion-navbar align-title="center"  >
+		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="blk">
+<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">MY SIMULATIONS</div>
+<div *ngIf="!cards.length" class="blk">
+<ion-item padding no-lines text-wrap class="blk" style="font-size:1.2em; color:#F8F8F8">
+<div [innerHTML]="instr" style="width:100%; font-size:1.2em !important" class="blk">
+</div>
+</ion-item>
+</div>
+<div *ngIf="cards.length" class="blk">
+  <ion-list>
+   <ion-item *ngFor="let c of cards"  class="borderBottomGainsboroAlpha blk" (click)="goPic(c.id, c.sts)">
+     <ion-row>
+     <ion-col col-3>
+     <img [src]="c.pic" style="object-fit:cover; width:100%">
+    </ion-col>
+    <ion-col col-1></ion-col>
+    <ion-col col-8>
+    <h2 class="blk">{{ c.name }}</h2>
+<p class="blk">{{ c.date }}</p>
+<div *ngIf="c.sts==1">
+<button ion-button large block (click)="retake(c.id)" color="light">Re-Take Selfie
+</button>
+</div>
+</ion-col>
+</ion-row>
+   </ion-item>
+  </ion-list>
+</div>
+
+</ion-content>

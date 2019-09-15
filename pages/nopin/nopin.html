@@ -1,0 +1,58 @@
+<ion-header no-border no-shadow  class="blk">
+	<ion-navbar align-title="center" class="blk">
+		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>
+	</ion-navbar>
+</ion-header>
+<ion-content padding class="blk">
+<div *ngIf="mode==0" class="blk">
+<p class="blk">Please enter your details and we will locate a suitable dentist in your area</p>
+<ion-list no-padding class="blk">
+<ion-item>
+<ion-label stacked>Your Name</ion-label>
+<ion-input [(ngModel)]="pl.name"  style="color:dodgerblue" required></ion-input>
+</ion-item>
+<ion-item>
+<ion-label stacked>Your Email Address</ion-label>
+<ion-input [(ngModel)]="pl.email" type="email" required style="color:dodgerblue"></ion-input>
+</ion-item>
+<ion-item>
+<ion-label stacked>Your Phone Number</ion-label>
+<ion-input [(ngModel)]="pl.phone" type="text" required style="color:dodgerblue"></ion-input>
+</ion-item>
+<ion-item>
+ <ion-label stacked>Your Suburb</ion-label>
+ <ion-input [(ngModel)]="pl.suburb" required style="color:dodgerblue"></ion-input>
+</ion-item>
+<ion-item>
+ <ion-label stacked>Your State / Region</ion-label>
+ <ion-input [(ngModel)]="pl.state" required style="color:dodgerblue"></ion-input>
+</ion-item>
+<ion-item>
+ <ion-label stacked>Your Country</ion-label>
+ <ion-input [(ngModel)]="pl.country" required style="color:dodgerblue"></ion-input>
+</ion-item>
+</ion-list>
+<button ion-button full color="light" (click)="saveme()">
+<ion-icon name="paper-plane"></ion-icon>
+SEND
+</button>
+</div>
+<div *ngIf="mode==1" class="blk">
+<ion-list class="blk">
+<ion-item class="blk">
+<ion-label stacked style="font-size:1.2em">Any other comments or concerns?</ion-label>
+<ion-textarea [(ngModel)]="pl.comments"  style="color:#272522; background-color:silver; font-weight:bold" rows="3" placeholder="Write your note here ..."> </ion-textarea>
+</ion-item>
+<ion-item no-lines text-center class="blk">
+<button ion-button large (click)="takepicture()" color="light">
+<ion-icon name="camera"></ion-icon> Take Selfie
+</button>
+</ion-item>
+
+<ion-item no-lines text-wrap class="blk">
+<div [innerHTML]="instructions" style="width:100%">
+</div>
+</ion-item>
+</ion-list>
+</div>
+</ion-content>

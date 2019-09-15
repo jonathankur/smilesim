@@ -1,0 +1,130 @@
+<ion-header no-border no-shadow  class="blk">
+	<ion-navbar align-title="center" class="blk">
+		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content no-padding text-center class="blk">
+<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">{{ title }}</div>
+
+<div *ngIf="mode==8" class="blk">
+<ion-item text-wrap class="blk">
+<div [innerHTML]="pinstructions">
+</div>
+</ion-item>
+<ion-row>
+<ion-col col-1></ion-col>
+<ion-col col-10>
+<ion-label stacked>Your personal PIN Code</ion-label>
+<ion-input [(ngModel)]="pin" type="text" required style="color:#222222; background-color:silver; font-weight:bold"></ion-input>
+</ion-col>
+<ion-col col-1>
+</ion-col>
+</ion-row>
+
+
+<ion-row>
+<ion-col col-1></ion-col>
+<ion-col col-10>
+<button ion-button large block (click)="checkpin()" color="light">Enter
+</button>
+</ion-col>
+<ion-col col-1>
+</ion-col>
+</ion-row>
+<ion-row (click)="nopin()">
+<ion-col col-12 text-center>
+<p class="blk"><u>Don't have a PIN?</u></p>
+</ion-col>
+</ion-row>
+
+</div>
+
+<div *ngIf="mode==0" >
+<ion-list no-lines class="blk">
+<ion-item class="blk">
+<ion-row>
+<ion-col col-2></ion-col>
+<ion-col col-8 style="color:black; background-color:gainsboro; font-size:1.3em">
+<img [src]="src" style="width:100%; margin-bottom:0px !important">
+<div style="width:100%; margin-top:0px !important; text-align:center">{{ baf }}</div>
+</ion-col>
+<ion-col col-2></ion-col>
+</ion-row>
+</ion-item>
+
+<ion-item text-center text-wrap class="blk">
+<div class="blkp" [innerHTML]="blurb"></div>
+</ion-item>
+
+<ion-item class="blk">
+<ion-row text-center class="blk">
+<ion-col col-4 (click)="gonxt(2);">
+<img src="./assets/img/sad.png" style="width:66%">
+</ion-col>
+<ion-col col-4 (click)="gonxt(1);">
+<img src="./assets/img/mid.png" style="width:66%">
+</ion-col>
+<ion-col col-4 (click)="gonxt(0);">
+<img src="./assets/img/happy.png" style="width:66%">
+</ion-col>
+</ion-row>
+<ion-row text-center class="blk">
+<ion-col col-4 (click)="gonxt(2);">
+<p class="blk">YES</p>
+</ion-col>
+<ion-col col-4 (click)="gonxt(1);">
+<p class="blk">MAYBE</p>
+</ion-col>
+<ion-col col-4 (click)="gonxt(0);">
+<p class="blk">NO</p>
+</ion-col>
+</ion-row>
+</ion-item>
+<ion-item text-center text-wrap *ngIf="current>0" class="blk">
+<p  class="blk" (click)="goback()"><u>Back to Previous Question</u></p>
+</ion-item>
+
+</ion-list>
+</div>
+
+
+<div *ngIf="mode==1" class="blk">
+<ion-list class="blk">
+<ion-item class="blk">
+<ion-label stacked style="font-size:1.2em">Any other comments or concerns?</ion-label>
+<ion-textarea [(ngModel)]="pl.comments"  style="color:#272522; background-color:silver; font-weight:bold" rows="3" placeholder="Write your note here ..."> </ion-textarea>
+</ion-item>
+<ion-item no-lines text-center class="blk">
+<button ion-button large (click)="takepicture()" color="light">
+<ion-icon name="camera"></ion-icon> Take Selfie
+</button>
+</ion-item>
+
+<ion-item no-lines text-wrap class="blk">
+<div [innerHTML]="instructions" style="width:100%">
+</div>
+</ion-item>
+</ion-list>
+</div>
+
+
+
+<div *ngIf="mode==4" class="blk">
+<ion-list class="blk">
+
+
+<ion-item no-lines text-wrap class="blk">
+<div [innerHTML]="welcome" style="width:100%">
+</div>
+</ion-item>
+
+<ion-item no-lines text-center class="blk">
+<button ion-button large (click)="startq()" color="light">
+<ion-icon name="happy"></ion-icon> Continue
+</button>
+</ion-item>
+</ion-list>
+</div>
+
+</ion-content>

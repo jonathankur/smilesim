@@ -1,0 +1,68 @@
+<ion-header no-border no-shadow class="blk">
+	<ion-navbar align-title="center" class="blk">
+		<ion-title class="blk"><img src="./assets/img/banner_neg3.png" style="margin-top:5px"></ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding class="blk">
+<div [innerHTML]="content" style="font-size:1.2em">
+</div>
+<ion-row *ngIf="!num">
+<ion-col col-1></ion-col>
+<ion-col col-10>
+<button ion-button large block (click)="startup()" color="light">
+Get Started
+</button>
+</ion-col>
+<ion-col col-1>
+</ion-col>
+</ion-row>
+<ion-row *ngIf="num">
+<ion-col col-1></ion-col>
+<ion-col col-10>
+<button ion-button large block (click)="previous()" color="light">
+See My Simulations
+</button>
+</ion-col>
+<ion-col col-1>
+</ion-col>
+</ion-row>
+<div [innerHTML]="content2" style="font-size:1.2em">
+</div>
+</ion-content>
+
+<ion-footer class="blk">
+<img [src]="banner" style="width:100%" >
+<ion-grid no-padding>
+<ion-row text-center>
+ <ion-col col-4 (click)="startup()">
+ <ion-icon name="camera"> </ion-icon>
+ </ion-col>
+ <ion-col col-4 (click)="previous()">
+ <ion-icon name="happy"> </ion-icon>
+ <ion-badge color="danger" *ngIf="unseen">{{ unseen }}</ion-badge>
+ </ion-col>
+
+ <ion-col col-4 (click)="examples()" >
+ <ion-icon name="photos"> </ion-icon>
+ </ion-col>
+
+</ion-row>
+<ion-row text-center style="min-height:50px !important">
+
+ <ion-col col-4 (click)="startup()">
+ New<br>Selfie
+ </ion-col>
+
+ <ion-col col-4 (click)="previous()">
+ See My<br>Simulations
+ </ion-col>
+
+ <ion-col col-4 (click)="examples()" >
+ Example<br>Gallery
+ </ion-col>
+
+</ion-row>
+
+</ion-grid>
+</ion-footer>
