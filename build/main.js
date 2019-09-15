@@ -225,7 +225,7 @@ var HomePage = /** @class */ (function () {
         this.oneSignal = oneSignal;
         this.content = 'Loading ...';
         this.content2 = '';
-        this.banner = 'https://mysmilesim.dental/server/sponsorbanner4.jpg';
+        this.banner = './assets/img/sponsorbanner4.jpg';
         this.num = 0;
         this.unseen = 0;
         this.pushid = '';
@@ -247,13 +247,16 @@ var HomePage = /** @class */ (function () {
         if (!this.pushid)
             this.pushid = '';
         var that = this;
-        var url = 'https://mysmilesim.dental/server/home.php?region=' + window.localStorage.getItem('region') + '&me=' + uniq;
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/home.php?region=' + window.localStorage.getItem('region') + '&me=' + uniq;
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
             that.content = d.content;
             that.content2 = d.content2;
-            that.banner = d.banner;
+            //         that.banner = d.banner;
             that.num = d.num;
             that.unseen = d.unseen;
             var v = parseInt(d.version);
@@ -274,7 +277,10 @@ var HomePage = /** @class */ (function () {
         i.then(function (data) {
             var that = _this;
             var w = window.localStorage.getItem('uniq');
-            var url = 'https://mysmilesim.dental/server/pushtoken.php?region=' + window.localStorage.getItem('region') + '&me=' + w + '&pushid=' + data.userId;
+            var home = window.localStorage.getItem('home');
+            if (!home)
+                home = 'https://mysmilesim.dental';
+            var url = home + '/server/pushtoken.php?region=' + window.localStorage.getItem('region') + '&me=' + w + '&pushid=' + data.userId;
             window.localStorage.setItem('pushid', data.userId);
             _this.http.get(url).subscribe(function (data) {
             }, function (err) {
@@ -311,9 +317,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/home/home.html"*/'<ion-header no-border no-shadow class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png" style="margin-top:5px"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content padding class="blk">\n<div [innerHTML]="content" style="font-size:1.2em">\n</div>\n<ion-row *ngIf="!num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="startup()" color="light">\nGet Started\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<ion-row *ngIf="num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="previous()" color="light">\nSee My Simulations\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<div [innerHTML]="content2" style="font-size:1.2em">\n</div>\n</ion-content>\n\n<ion-footer class="blk">\n<img [src]="banner" style="width:100%" >\n<ion-grid no-padding>\n<ion-row text-center>\n <ion-col col-4 (click)="startup()">\n <ion-icon name="camera"> </ion-icon>\n </ion-col>\n <ion-col col-4 (click)="previous()">\n <ion-icon name="happy"> </ion-icon>\n <ion-badge color="danger" *ngIf="unseen">{{ unseen }}</ion-badge>\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n <ion-icon name="photos"> </ion-icon>\n </ion-col>\n\n</ion-row>\n<ion-row text-center style="min-height:50px !important">\n\n <ion-col col-4 (click)="startup()">\n New<br>Selfie\n </ion-col>\n\n <ion-col col-4 (click)="previous()">\n See My<br>Simulations\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n Example<br>Gallery\n </ion-col>\n\n</ion-row>\n\n</ion-grid>\n</ion-footer>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */]) === "function" && _d || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -496,6 +503,7 @@ var DosimPage = /** @class */ (function () {
                 that.pl.dcode = d.dcode;
                 that.pl.phone = d.phone;
                 window.localStorage.setItem('region', d.region);
+                window.localStorage.setItem('home', d.home);
                 if (d.name == 'clearme') {
                     window.localStorage.removeItem('pushid');
                     window.localStorage.removeItem('uniq');
@@ -520,7 +528,7 @@ var DosimPage = /** @class */ (function () {
             that.baf = (that.odd ? 'BEFORE' : 'AFTER');
         }, 2500);
         this.pl.uniq = window.localStorage.getItem('myac');
-        var url = 'https://mysmilesim.dental/server/instructions.php?region=' + window.localStorage.getItem('region') + '&end=' + Math.random();
+        var url = 'https://mysmilesim.dental/server/instructions.php?rnd=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -646,7 +654,10 @@ var DosimPage = /** @class */ (function () {
             content: 'Please wait...'
         });
         loading.present();
-        var url = 'https://mysmilesim.dental/server/upload.php';
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/upload.php';
         this.nhttp.post(url, that.pl, {})
             .then(function (data) {
             loading.dismiss();
@@ -661,9 +672,10 @@ var DosimPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-dosim',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/dosim/dosim.html"*/'<ion-header no-border no-shadow  class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content no-padding text-center class="blk">\n<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">{{ title }}</div>\n\n<div *ngIf="mode==8" class="blk">\n<ion-item text-wrap class="blk">\n<div [innerHTML]="pinstructions">\n</div>\n</ion-item>\n<ion-row>\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<ion-label stacked>Your personal PIN Code</ion-label>\n<ion-input [(ngModel)]="pin" type="text" required style="color:#222222; background-color:silver; font-weight:bold"></ion-input>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n\n\n<ion-row>\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="checkpin()" color="light">Enter\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<ion-row (click)="nopin()">\n<ion-col col-12 text-center>\n<p class="blk"><u>Don\'t have a PIN?</u></p>\n</ion-col>\n</ion-row>\n\n</div>\n\n<div *ngIf="mode==0" >\n<ion-list no-lines class="blk">\n<ion-item class="blk">\n<ion-row>\n<ion-col col-2></ion-col>\n<ion-col col-8 style="color:black; background-color:gainsboro; font-size:1.3em">\n<img [src]="src" style="width:100%; margin-bottom:0px !important">\n<div style="width:100%; margin-top:0px !important; text-align:center">{{ baf }}</div>\n</ion-col>\n<ion-col col-2></ion-col>\n</ion-row>\n</ion-item>\n\n<ion-item text-center text-wrap class="blk">\n<div class="blkp" [innerHTML]="blurb"></div>\n</ion-item>\n\n<ion-item class="blk">\n<ion-row text-center class="blk">\n<ion-col col-4 (click)="gonxt(2);">\n<img src="./assets/img/sad.png" style="width:66%">\n</ion-col>\n<ion-col col-4 (click)="gonxt(1);">\n<img src="./assets/img/mid.png" style="width:66%">\n</ion-col>\n<ion-col col-4 (click)="gonxt(0);">\n<img src="./assets/img/happy.png" style="width:66%">\n</ion-col>\n</ion-row>\n<ion-row text-center class="blk">\n<ion-col col-4 (click)="gonxt(2);">\n<p class="blk">YES</p>\n</ion-col>\n<ion-col col-4 (click)="gonxt(1);">\n<p class="blk">MAYBE</p>\n</ion-col>\n<ion-col col-4 (click)="gonxt(0);">\n<p class="blk">NO</p>\n</ion-col>\n</ion-row>\n</ion-item>\n<ion-item text-center text-wrap *ngIf="current>0" class="blk">\n<p  class="blk" (click)="goback()"><u>Back to Previous Question</u></p>\n</ion-item>\n\n</ion-list>\n</div>\n\n\n<div *ngIf="mode==1" class="blk">\n<ion-list class="blk">\n<ion-item class="blk">\n<ion-label stacked style="font-size:1.2em">Any other comments or concerns?</ion-label>\n<ion-textarea [(ngModel)]="pl.comments"  style="color:#272522; background-color:silver; font-weight:bold" rows="3" placeholder="Write your note here ..."> </ion-textarea>\n</ion-item>\n<ion-item no-lines text-center class="blk">\n<button ion-button large (click)="takepicture()" color="light">\n<ion-icon name="camera"></ion-icon> Take Selfie\n</button>\n</ion-item>\n\n<ion-item no-lines text-wrap class="blk">\n<div [innerHTML]="instructions" style="width:100%">\n</div>\n</ion-item>\n</ion-list>\n</div>\n\n\n\n<div *ngIf="mode==4" class="blk">\n<ion-list class="blk">\n\n\n<ion-item no-lines text-wrap class="blk">\n<div [innerHTML]="welcome" style="width:100%">\n</div>\n</ion-item>\n\n<ion-item no-lines text-center class="blk">\n<button ion-button large (click)="startq()" color="light">\n<ion-icon name="happy"></ion-icon> Continue\n</button>\n</ion-item>\n</ion-list>\n</div>\n\n</ion-content>'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/dosim/dosim.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__["a" /* Camera */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_http__["a" /* HTTP */]) === "function" && _g || Object])
     ], DosimPage);
     return DosimPage;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=dosim.js.map
@@ -720,7 +732,10 @@ var MysimsPage = /** @class */ (function () {
         this.instr = '';
         this.me = window.localStorage.getItem('uniq');
         var that = this;
-        var url = 'https://mysmilesim.dental/server/mysims.php?region=' + window.localStorage.getItem('region') + '&me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/mysims.php?region=' + window.localStorage.getItem('region') + '&me=' + window.localStorage.getItem('uniq') + '&end=' + Math.random();
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
@@ -779,7 +794,10 @@ var MysimsPage = /** @class */ (function () {
             content: 'Please wait...'
         });
         loading.present();
-        var url = 'https://mysmilesim.dental/server/retake.php';
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/retake.php';
         this.nhttp.post(url, that.pl, {})
             .then(function (data) {
             loading.dismiss();
@@ -844,7 +862,10 @@ var ResultPage = /** @class */ (function () {
     }
     ResultPage.prototype.ionViewDidLoad = function () {
         var that = this;
-        var url = 'https://mysmilesim.dental/server/getresult.php?region=' + window.localStorage.getItem('region') + '&id=' + this.navParams.get('id');
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/getresult.php?region=' + window.localStorage.getItem('region') + '&id=' + this.navParams.get('id');
         this.http.get(url).subscribe(function (data) {
             var s = JSON.stringify(data);
             var d = JSON.parse(s);
