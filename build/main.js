@@ -229,7 +229,7 @@ var HomePage = /** @class */ (function () {
         this.num = 0;
         this.unseen = 0;
         this.pushid = '';
-        this.thisversion = 2;
+        this.thisversion = 3;
     }
     HomePage.prototype.ionViewDidEnter = function () {
         var uniq = window.localStorage.getItem('uniq');
