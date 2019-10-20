@@ -25704,6 +25704,28 @@ ion-header ion-icon.back-button-icon.icon {
   color: #f8f8f8 !important;
 }
 
+page-big .blk {
+  background-color: #272522;
+  color: #F8F8F8;
+}
+
+page-big .blkh {
+  color: #FFFF82;
+}
+
+page-big .hdr {
+  background-color: silver;
+  color: black;
+}
+
+page-big p {
+  color: #F8F8F8;
+}
+
+page-big a {
+  color: #FFFF82 !important;
+}
+
 page-dosim .blk {
   background-color: #272522;
   color: #F8F8F8;
