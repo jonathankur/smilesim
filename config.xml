@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="au.com.smilesim" version="1.6.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="au.com.smilesim" version="1.6.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MySmileSim</name>
     <description>Imagine Your New Smile.</description>
   <author href="https://mysmilesim.dental" email="mysmilesim@gmail.com">
@@ -144,5 +144,6 @@
 </edit-config>
    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
 
+    <gap:plugin name="cordova-plugin-x-socialsharing" spec="4.19.0" />
 
 </widget>
