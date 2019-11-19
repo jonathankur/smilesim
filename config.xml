@@ -144,6 +144,6 @@
 </edit-config>
    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
 
-    <gap:plugin name="cordova-plugin-x-socialsharing" spec="4.19.0" />
+    <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
 
 </widget>
