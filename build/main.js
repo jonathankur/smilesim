@@ -50,6 +50,11 @@ var ResultPage = /** @class */ (function () {
             'url': ''
         };
         this.cnt = 0;
+        this.pl = {
+            picdata: '',
+            region: '0',
+            id: 0
+        };
     }
     ResultPage.prototype.ionViewDidLoad = function () {
         var that = this;
@@ -81,9 +86,69 @@ var ResultPage = /** @class */ (function () {
             this.cnt = 0;
         this.th = this.cards[this.cnt];
     };
+    ResultPage.prototype.retake = function (i) {
+        var _this = this;
+        this.pl.id = i;
+        var options = {
+            quality: 100,
+            targetWidth: 500,
+            targetHeight: 650,
+            correctOrientation: true,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            cameraDirection: this.camera.Direction.FRONT,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
+        };
+        this.camera.getPicture(options).then(function (imageData) {
+            _this.pl.picdata = imageData;
+            _this.pl.region = window.localStorage.getItem('region');
+            _this.saveme();
+        }, function (err) {
+            alert(JSON.stringify(err));
+        });
+    };
+    ResultPage.prototype.doComplete = function () {
+        var _this = this;
+        var that = this;
+        var alert = this.alertCtrl.create({
+            title: 'Thank you - All Done',
+            subTitle: 'Your dentist will be in touch shortly',
+            buttons: [
+                {
+                    text: 'Okay',
+                    cssClass: 'btt',
+                    role: 'cancel',
+                    handler: function () {
+                        _this.navCtrl.pop();
+                    }
+                }
+            ]
+        });
+        alert.present();
+    };
+    ResultPage.prototype.saveme = function () {
+        var that = this;
+        var loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+        });
+        loading.present();
+        var home = window.localStorage.getItem('home');
+        if (!home)
+            home = 'https://mysmilesim.dental';
+        var url = home + '/server/retake.php';
+        this.nhttp.post(url, that.pl, {})
+            .then(function (data) {
+            loading.dismiss();
+            that.doComplete();
+        })
+            .catch(function (error) {
+            alert(JSON.stringify(error));
+            loading.dismiss();
+        });
+    };
     ResultPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-result',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/result/result.html"*/'<ion-header no-border no-shadow  class="blk">\n	<ion-navbar align-title="center"  class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="blk">\n<div *ngIf="!cards.length" class="blk">\n<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">MY SIMULATIONS</div>\n<ion-item padding no-lines text-wrap class="blk" style="font-size:1.2em; color:#F8F8F8">\n<div [innerHTML]="instr" style="width:100%; font-size:1.2em !important" class="blk">\n</div>\n</ion-item>\n</div>\n<div *ngIf="cards.length">\n<div *ngIf="cards.length>1">\n<ion-row>\n<ion-col col-12>\n<button ion-button large block (click)="gonext()" color="light">\nNEXT SIMULATION\n</button>\n</ion-col>\n</ion-row>\n  \n</div>\n<div *ngIf="cards.length==1">\n<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">MY SIMULATION</div>\n</div>\n     <ion-card class="blk">\n\n        <ion-card-content>\n                 <ion-row>\n	 <ion-col col-6>\n        <img src="{{ th.pic }}" />\n        </ion-col> <ion-col col-6>\n        <img src="{{ th.pic2 }}" />\n        </ion-col>\n\n	</ion-row>\n<ion-row *ngIf="th.result>0">\n<ion-col col-12>\n<button ion-button large block (click)="showbig()" color="light">\nENLARGE PHOTOS\n</button>\n</ion-col>\n</ion-row>\n        <ion-row text-wrap>\n        <ion-col col-1></ion-col>\n        <ion-col col-10 class="blk">\n<div [innerHTML]="th.text" class="blk" style="font-size:1.2em"></div>\n</ion-col>\n        <ion-col col-1></ion-col>\n        </ion-row>\n<ion-row *ngIf="th.ebook" class="blk">\n<ion-col col-12 text-center><p class="blkh">-- OR --</p><br>\n<button ion-button large block (click)="doebook()" color="light">\nBOOK NOW\n</button>\n\n</ion-col></ion-row>\n        <ion-row text-wrap>\n        <ion-col col-1></ion-col>\n        <ion-col col-10 class="blk">\n<div [innerHTML]="th.text2" class="blk" style="font-size:1.2em"></div>\n</ion-col>\n        <ion-col col-1></ion-col>\n        </ion-row>\n\n\n\n        </ion-card-content>\n      </ion-card>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/result/result.html"*/,
+            selector: 'page-result',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/result/result.html"*/'<ion-header no-border no-shadow  class="blk">\n	<ion-navbar align-title="center"  class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="blk">\n<div *ngIf="!cards.length" class="blk">\n<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">MY SIMULATIONS</div>\n<ion-item padding no-lines text-wrap class="blk" style="font-size:1.2em; color:#F8F8F8">\n<div [innerHTML]="instr" style="width:100%; font-size:1.2em !important" class="blk">\n</div>\n</ion-item>\n</div>\n<div *ngIf="cards.length">\n<div *ngIf="cards.length>1">\n<ion-row>\n<ion-col col-12>\n<button ion-button large block (click)="gonext()" color="light">\nNEXT SIMULATION\n</button>\n</ion-col>\n</ion-row>\n  \n</div>\n<div *ngIf="cards.length==1">\n<div style="width:100%; text-align:center !important; padding:6px; font-size:1.4em !important; margin-bottom: 0px !important" class="hdr">MY SIMULATION</div>\n</div>\n     <ion-card class="blk">\n\n        <ion-card-content>\n                 <ion-row>\n	 <ion-col col-6>\n        <img src="{{ th.pic }}" />\n        </ion-col> <ion-col col-6>\n        <img src="{{ th.pic2 }}" />\n        </ion-col>\n\n	</ion-row>\n<ion-row *ngIf="th.result>0">\n<ion-col col-12>\n<button ion-button large block (click)="showbig()" color="light">\nENLARGE PHOTOS\n</button>\n</ion-col>\n</ion-row>\n        <ion-row text-wrap>\n        <ion-col col-1></ion-col>\n        <ion-col col-10 class="blk">\n<div [innerHTML]="th.text" class="blk" style="font-size:1.2em"></div>\n</ion-col>\n        <ion-col col-1></ion-col>\n        </ion-row>\n<ion-row *ngIf="th.ebook" class="blk">\n<ion-col col-12 text-center><p class="blkh">-- OR --</p><br>\n<button ion-button large block (click)="doebook()" color="light">\nBOOK NOW\n</button>\n\n</ion-col></ion-row>\n\n\n<div *ngIf="th.sts==1">\n<button ion-button large block (click)="retake(th.id)" color="light">Re-Take Selfie\n</button>\n</div>\n\n        <ion-row text-wrap>\n        <ion-col col-1></ion-col>\n        <ion-col col-10 class="blk">\n<div [innerHTML]="th.text2" class="blk" style="font-size:1.2em"></div>\n</ion-col>\n        <ion-col col-1></ion-col>\n        </ion-row>\n\n\n\n        </ion-card-content>\n      </ion-card>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/result/result.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_in_app_browser__["a" /* InAppBrowser */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_6__ionic_native_http__["a" /* HTTP */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], ResultPage);
@@ -170,7 +235,7 @@ var HomePage = /** @class */ (function () {
         this.num = 0;
         this.unseen = 0;
         this.pushid = '';
-        this.thisversion = 3;
+        this.thisversion = 4;
     }
     HomePage.prototype.ionViewDidEnter = function () {
         var uniq = window.localStorage.getItem('uniq');
@@ -261,9 +326,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/smile/src/pages/home/home.html"*/'<ion-header no-border no-shadow class="blk">\n	<ion-navbar align-title="center" class="blk">\n		<ion-title class="blk"><img src="./assets/img/banner_neg3.png" style="margin-top:5px"></ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content padding class="blk">\n<div [innerHTML]="content" style="font-size:1.2em">\n</div>\n<ion-row *ngIf="!num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="startup()" color="light">\nGet Started\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<ion-row *ngIf="num">\n<ion-col col-1></ion-col>\n<ion-col col-10>\n<button ion-button large block (click)="previous()" color="light">\nSee My Simulations\n</button>\n</ion-col>\n<ion-col col-1>\n</ion-col>\n</ion-row>\n<div [innerHTML]="content2" style="font-size:1.2em">\n</div>\n</ion-content>\n\n<ion-footer class="blk">\n<img [src]="banner" style="width:100%" >\n\n<ion-grid no-padding *ngIf="!num">\n<ion-row text-center>\n <ion-col col-4 (click)="startup()">\n <ion-icon name="camera"> </ion-icon>\n </ion-col>\n <ion-col col-4 (click)="previous()">\n <ion-icon name="happy"> </ion-icon>\n <ion-badge color="danger" *ngIf="unseen">{{ unseen }}</ion-badge>\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n <ion-icon name="photos"> </ion-icon>\n </ion-col>\n\n</ion-row>\n<ion-row text-center style="min-height:50px !important">\n\n <ion-col col-4 (click)="startup()">\n New<br>Selfie\n </ion-col>\n\n <ion-col col-4 (click)="previous()">\n See My<br>Simulations\n </ion-col>\n\n <ion-col col-4 (click)="examples()" >\n Example<br>Gallery\n </ion-col>\n\n</ion-row>\n\n</ion-grid>\n\n<ion-grid no-padding *ngIf="num">\n<ion-row text-center>\n <ion-col col-3 (click)="startup()">\n <ion-icon name="camera"> </ion-icon>\n </ion-col>\n <ion-col col-3 (click)="previous()">\n <ion-icon name="happy"> </ion-icon>\n <ion-badge color="danger" *ngIf="unseen">{{ unseen }}</ion-badge>\n </ion-col>\n\n <ion-col col-3 (click)="examples()" >\n <ion-icon name="photos"> </ion-icon>\n </ion-col>\n\n <ion-col col-3 (click)="invite()" >\n <ion-icon name="mail"> </ion-icon>\n </ion-col>\n\n</ion-row>\n<ion-row text-center style="min-height:50px !important">\n\n <ion-col col-3 (click)="startup()">\n New<br>Selfie\n </ion-col>\n\n <ion-col col-3 (click)="previous()">\n See My<br>Simulations\n </ion-col>\n\n <ion-col col-3 (click)="examples()" >\n Example<br>Gallery\n </ion-col>\n\n <ion-col col-3 (click)="invite()" >\n Invite<br>A Friend\n </ion-col>\n\n</ion-row>\n\n</ion-grid>\n</ion-footer>\n'/*ion-inline-end:"/var/www/html/ionic/smile/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_7__ionic_native_onesignal__["a" /* OneSignal */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_7__ionic_native_onesignal__["a" /* OneSignal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__ionic_native_onesignal__["a" /* OneSignal */]) === "function" && _d || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=home.js.map
