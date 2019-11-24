@@ -29,7 +29,7 @@
     <access origin="http://mysmilesimusa.com" subdomains="true" />
     <access origin="http://mysmilesimasia.com" subdomains="true" />
 
-    <preference name="phonegap-version" value="cli-8.0.0" />
+    <preference name="phonegap-version" value="cli-9.0.0" />
 
 
 <platform name="ios">
