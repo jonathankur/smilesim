@@ -134,7 +134,7 @@
 
     <plugin name="onesignal-cordova-plugin" spec="2.4.5" source="npm" />
 <preference name="android-build-tool" value="gradle" />
-<preference name="android-minSdkVersion" value="16" />
+<preference name="android-minSdkVersion" value="19" />
 
 <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge" overwrite="true">
     <string>Take Photo to Send to Dentist</string>
