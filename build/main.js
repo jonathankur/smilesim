@@ -579,7 +579,7 @@ var DosimPage = /** @class */ (function () {
         var options = {
             quality: 100,
             targetWidth: 500,
-            targetHeight: 650,
+            targetHeight: 1050,
             correctOrientation: true,
             destinationType: this.camera.DestinationType.DATA_URL,
             cameraDirection: this.camera.Direction.FRONT,
